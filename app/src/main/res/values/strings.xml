@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Agora</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="nav_bar_titles">
+        <item>Browse</item>
+        <item>Education</item>
+        <item>Fashion</item>
+        <item>Home</item>
+        <item>Tech</item>
+        <item>Misc</item>
+    </string-array>
+</resources>
