@@ -15,6 +15,11 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         MainActivityFragment mainActivityFragment = MainActivityFragment.newInstance("RECENTS");
+
+        Bundle args = new Bundle();
+        args.putString("parameter", "RECENTS");
+        mainActivityFragment.setArguments(args);
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.mainActivity, mainActivityFragment);
