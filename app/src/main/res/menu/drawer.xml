@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/browse"
+            android:checked="false"
+            android:title="@string/browse" />
+
+        <item
+            android:id="@+id/education"
+            android:checked="false"
+            android:title="@string/education" />
+
+        <item
+            android:id="@+id/fashion"
+            android:checked="false"
+            android:title="@string/fashion" />
+
+        <item
+            android:id="@+id/home"
+            android:checked="false"
+            android:title="@string/home" />
+
+        <item
+            android:id="@+id/tech"
+            android:checked="false"
+            android:title="@string/tech" />
+        <item
+            android:id="@+id/misc"
+            android:checked="false"
+            android:title="@string/misc" />
+
+    </group>
+</menu>
