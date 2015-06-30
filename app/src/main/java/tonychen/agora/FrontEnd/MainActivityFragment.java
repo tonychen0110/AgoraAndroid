@@ -1,6 +1,5 @@
 package tonychen.agora.FrontEnd;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,10 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.parse.Parse;
 
 import java.util.List;
 
@@ -52,7 +48,7 @@ public class MainActivityFragment extends Fragment {
         List<Post> listPosts = ParseInterface.getPostsFromParse(parameter, 0);
 
         GridView gridview = (GridView) viewer.findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter( getActivity(), listPosts ));
+        gridview.setAdapter(new GridAdapter( getActivity(), listPosts ));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,

@@ -48,9 +48,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-
                 Toast.makeText(MainActivity.this,"Hello World",Toast.LENGTH_SHORT).show();
-
 
             }
         });
@@ -85,30 +83,65 @@ public class MainActivity extends ActionBarActivity {
                 //Closing drawer on item click
                 drawerLayout.closeDrawers();
 
+                MainActivityFragment mainActivityFragment;
+
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
                     case R.id.browse:
                         Toast.makeText(getApplicationContext(), "Browse Selected", Toast.LENGTH_SHORT).show();
+
+                        mainActivityFragment = MainActivityFragment.newInstance("RECENTS");
+                        fragmentTransaction.replace(R.id.frame, mainActivityFragment);
+                        fragmentTransaction.commit();
+
                         toolbar.setTitle("Agora");
                         break;
                     case R.id.education:
                         Toast.makeText(getApplicationContext(), "Education Selected", Toast.LENGTH_SHORT).show();
+
+                        mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.education));
+                        fragmentTransaction.replace(R.id.frame, mainActivityFragment);
+                        fragmentTransaction.commit();
+
                         toolbar.setTitle(getResources().getString(R.string.education));
                         break;
                     case R.id.fashion:
                         Toast.makeText(getApplicationContext(), "Fashion Selected", Toast.LENGTH_SHORT).show();
+
+                        mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.fashion));
+                        fragmentTransaction.replace(R.id.frame, mainActivityFragment);
+                        fragmentTransaction.commit();
+
                         toolbar.setTitle(getResources().getString(R.string.fashion));
                         break;
                     case R.id.home:
                         Toast.makeText(getApplicationContext(), "Home Selected", Toast.LENGTH_SHORT).show();
+
+                        mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.home));
+                        fragmentTransaction.replace(R.id.frame, mainActivityFragment);
+                        fragmentTransaction.commit();
+
                         toolbar.setTitle(getResources().getString(R.string.home));
                         break;
                     case R.id.tech:
                         Toast.makeText(getApplicationContext(), "Tech Selected", Toast.LENGTH_SHORT).show();
+
+                        mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.tech));
+                        fragmentTransaction.replace(R.id.frame, mainActivityFragment);
+                        fragmentTransaction.commit();
+
                         toolbar.setTitle(getResources().getString(R.string.tech));
                         break;
                     case R.id.misc:
                         Toast.makeText(getApplicationContext(), "Misc Selected", Toast.LENGTH_SHORT).show();
+
+                        mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.misc));
+                        fragmentTransaction.replace(R.id.frame, mainActivityFragment);
+                        fragmentTransaction.commit();
+
                         toolbar.setTitle(getResources().getString(R.string.misc));
                         break;
                     default:
