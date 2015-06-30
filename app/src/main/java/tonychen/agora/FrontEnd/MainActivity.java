@@ -11,7 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import tonychen.agora.R;
@@ -22,6 +24,7 @@ public class MainActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private ImageButton FAB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,18 @@ public class MainActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Initializing floating action button & setting click listener
+        FAB = (ImageButton) findViewById(R.id.imageButton);
+        FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Toast.makeText(MainActivity.this,"Hello World",Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
         //Initializing the header
         RelativeLayout header = (RelativeLayout) findViewById(R.id.header);
 
@@ -49,6 +64,10 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(getApplicationContext(), "Header Selected", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //TODO Set user's name here
+        TextView headerUsername = (TextView) findViewById(R.id.username);
+        headerUsername.setText("Tony Chen");
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);

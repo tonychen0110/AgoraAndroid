@@ -13,15 +13,26 @@
         android:name="tonychen.agora.FrontEnd.MainActivityFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <include
             android:id="@+id/toolbar"
             layout="@layout/tool_bar"
             />
+
         <FrameLayout
             android:id="@+id/frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageButton
+                android:translationZ="12dp"
+                android:layout_margin="15dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:src="@drawable/ic_add_white_24dp"
+                android:background="@drawable/circle"
+                android:id="@+id/imageButton"
+                android:layout_gravity="end|bottom" />
         </FrameLayout>
 
     </LinearLayout>
