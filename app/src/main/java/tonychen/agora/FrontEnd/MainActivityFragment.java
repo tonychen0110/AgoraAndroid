@@ -1,18 +1,22 @@
 package tonychen.agora.FrontEnd;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import tonychen.agora.BackEnd.ParseInterface;
 import tonychen.agora.BackEnd.Post;
+import tonychen.agora.FrontEnd.HelperClasses.GridAdapter;
 import tonychen.agora.R;
 
 
@@ -20,6 +24,7 @@ import tonychen.agora.R;
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public static MainActivityFragment newInstance(String parameter) {
         MainActivityFragment f = new MainActivityFragment();
@@ -43,9 +48,27 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View viewer =  inflater.inflate(R.layout.fragment_main, container, false);
+        final String parameter = getArguments().getString("parameter");
 
-        String parameter = getArguments().getString("parameter");
-        List<Post> listPosts = ParseInterface.getPostsFromParse(parameter, 0);
+        swipeRefreshLayout = (SwipeRefreshLayout) viewer.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                MainActivityFragment mainActivityFragment = MainActivityFragment.newInstance(parameter);
+                fragmentTransaction.replace(R.id.frame, mainActivityFragment);
+                fragmentTransaction.commit();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+        swipeRefreshLayout.setColorSchemeColors(Color.BLUE,
+                Color.GREEN,
+                Color.YELLOW,
+                Color.RED);
+
+
+        final List<Post> listPosts = ParseInterface.getPostsFromParse(parameter, 0);
 
         GridView gridview = (GridView) viewer.findViewById(R.id.gridview);
         gridview.setAdapter(new GridAdapter( getActivity(), listPosts ));
@@ -53,8 +76,9 @@ public class MainActivityFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getActivity(), PostViewActivity.class);
+                i.putExtra("objectId", listPosts.get(position).objectId);
+                startActivity(i);
             }
         });
 

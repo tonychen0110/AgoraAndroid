@@ -66,40 +66,34 @@ public class ParseInterface {
         parsePost.saveInBackground();
     }
 
-    public static void getPostFromParseIndividual(String objectId, final Post post) {
+    public static Post getPostFromParseIndividual(String objectId) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Posts");
         query.include("createdBy");
 
-        query.getInBackground(objectId, new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
+        Post post = new Post();
 
-                if (e == null) {
-                    // object found
-                    post.objectId = parseObject.getObjectId();
-                    post.title = parseObject.getString("title");
-                    post.itemDesc = parseObject.getString("description");
-                    post.category = parseObject.getString("category");
-                    post.price = parseObject.getDouble("price");
-                    post.createdBy = parseObject.getParseUser("createdBy");
+        try {
+            ParseObject parseObject = query.get(objectId);
 
-                    post.PFheaderPhoto = parseObject.getParseFile("picture");
-                    post.PFPhotos = (ArrayList<ParseFile>)parseObject.get("pictures");
+            // object found
+            post.objectId = parseObject.getObjectId();
+            post.title = parseObject.getString("title");
+            post.itemDesc = parseObject.getString("description");
+            post.category = parseObject.getString("category");
+            post.price = parseObject.getDouble("price");
+            post.createdBy = parseObject.getParseUser("createdBy");
+            byte[] bytes = parseObject.getParseFile("picture").getData();
+            post.headerPhoto = BitmapFactory.decodeByteArray(bytes, 0,bytes.length );
 
-                    post.ready = true;
-                    Log.w("agora", post.objectId);
-                    Log.w("agora", post.title);
-                    Log.w("agora", post.itemDesc);
-                    Log.w("agora", post.category);
-                } else {
-                    // something went wrong
-                }
-            }
-        });
+        } catch (ParseException e) {
+            //Something wrong happened
+        }
+
+        return post;
     }
 
     public static List<Post> getPostsFromParse(String parameter, int skip/*, final Vector vec*/) {
-        List<String> browseKeys = Arrays.asList("objectId", "title", "category", "price", "createdBy", "description", "thumbnail", "FBPostId", "picture", "pictures");
+        List<String> browseKeys = Arrays.asList("objectId", "title", "category", "price", "thumbnail");
         List<Post> retrievedPosts = new ArrayList<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Posts");
@@ -130,14 +124,9 @@ public class ParseInterface {
 
                 post.objectId = parseObject.getObjectId();
                 post.title = parseObject.getString("title");
-                post.itemDesc = parseObject.getString("description");
                 post.category = parseObject.getString("category");
                 post.price = parseObject.getDouble("price");
-                post.createdBy = parseObject.getParseUser("createdBy");
 
-                //byte[] bytes = parseObject.getParseFile("picture").getData();
-                //post.headerPhoto = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                //post.PFPhotos = (ArrayList<ParseFile>)parseObject.get("pictures");
                 byte[] bytes = parseObject.getParseFile("thumbnail").getData();
                 post.thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 

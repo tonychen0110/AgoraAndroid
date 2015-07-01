@@ -2,15 +2,18 @@ package tonychen.agora.FrontEnd;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -91,8 +94,6 @@ public class MainActivity extends ActionBarActivity {
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
                     case R.id.browse:
-                        Toast.makeText(getApplicationContext(), "Browse Selected", Toast.LENGTH_SHORT).show();
-
                         mainActivityFragment = MainActivityFragment.newInstance("RECENTS");
                         fragmentTransaction.replace(R.id.frame, mainActivityFragment);
                         fragmentTransaction.commit();
@@ -100,8 +101,6 @@ public class MainActivity extends ActionBarActivity {
                         toolbar.setTitle("Agora");
                         break;
                     case R.id.education:
-                        Toast.makeText(getApplicationContext(), "Education Selected", Toast.LENGTH_SHORT).show();
-
                         mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.education));
                         fragmentTransaction.replace(R.id.frame, mainActivityFragment);
                         fragmentTransaction.commit();
@@ -109,8 +108,6 @@ public class MainActivity extends ActionBarActivity {
                         toolbar.setTitle(getResources().getString(R.string.education));
                         break;
                     case R.id.fashion:
-                        Toast.makeText(getApplicationContext(), "Fashion Selected", Toast.LENGTH_SHORT).show();
-
                         mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.fashion));
                         fragmentTransaction.replace(R.id.frame, mainActivityFragment);
                         fragmentTransaction.commit();
@@ -118,8 +115,6 @@ public class MainActivity extends ActionBarActivity {
                         toolbar.setTitle(getResources().getString(R.string.fashion));
                         break;
                     case R.id.home:
-                        Toast.makeText(getApplicationContext(), "Home Selected", Toast.LENGTH_SHORT).show();
-
                         mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.home));
                         fragmentTransaction.replace(R.id.frame, mainActivityFragment);
                         fragmentTransaction.commit();
@@ -127,8 +122,6 @@ public class MainActivity extends ActionBarActivity {
                         toolbar.setTitle(getResources().getString(R.string.home));
                         break;
                     case R.id.tech:
-                        Toast.makeText(getApplicationContext(), "Tech Selected", Toast.LENGTH_SHORT).show();
-
                         mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.tech));
                         fragmentTransaction.replace(R.id.frame, mainActivityFragment);
                         fragmentTransaction.commit();
@@ -136,8 +129,6 @@ public class MainActivity extends ActionBarActivity {
                         toolbar.setTitle(getResources().getString(R.string.tech));
                         break;
                     case R.id.misc:
-                        Toast.makeText(getApplicationContext(), "Misc Selected", Toast.LENGTH_SHORT).show();
-
                         mainActivityFragment = MainActivityFragment.newInstance(getResources().getString(R.string.misc));
                         fragmentTransaction.replace(R.id.frame, mainActivityFragment);
                         fragmentTransaction.commit();
