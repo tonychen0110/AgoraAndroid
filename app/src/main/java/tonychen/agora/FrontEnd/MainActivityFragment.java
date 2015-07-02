@@ -25,10 +25,12 @@ import tonychen.agora.R;
  */
 public class MainActivityFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
+    private List<Post> listPosts;
+    private String parameter;
+    private GridView gridview;
 
     public static MainActivityFragment newInstance(String parameter) {
         MainActivityFragment f = new MainActivityFragment();
-
         Bundle args = new Bundle();
         args.putString("parameter", parameter);
         f.setArguments(args);
@@ -48,31 +50,27 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View viewer =  inflater.inflate(R.layout.fragment_main, container, false);
-        final String parameter = getArguments().getString("parameter");
+
+        parameter = getArguments().getString("parameter");
+        gridview = (GridView) viewer.findViewById(R.id.gridview);
+        listPosts = ParseInterface.getPostsFromParse(parameter, 0);
 
         swipeRefreshLayout = (SwipeRefreshLayout) viewer.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                MainActivityFragment mainActivityFragment = MainActivityFragment.newInstance(parameter);
-                fragmentTransaction.replace(R.id.frame, mainActivityFragment);
-                fragmentTransaction.commit();
+                listPosts.clear();
+                listPosts.addAll(ParseInterface.getPostsFromParse(parameter, 0));
+                gridview.setAdapter(new GridAdapter(getActivity(), listPosts));
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
-
         swipeRefreshLayout.setColorSchemeColors(Color.BLUE,
                 Color.GREEN,
                 Color.YELLOW,
                 Color.RED);
 
-
-        final List<Post> listPosts = ParseInterface.getPostsFromParse(parameter, 0);
-
-        GridView gridview = (GridView) viewer.findViewById(R.id.gridview);
         gridview.setAdapter(new GridAdapter( getActivity(), listPosts ));
-
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {

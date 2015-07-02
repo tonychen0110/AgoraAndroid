@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import tonychen.agora.BackEnd.Post;
@@ -51,10 +52,10 @@ public class GridAdapter extends BaseAdapter {
            holder = (ViewHolder) gridView.getTag();
        }
 
-        holder.title.setText(postList.get(position).title);
-        holder.title.setTag(postList.get(position).objectId);
-        holder.title.setBackgroundColor(0);
-        holder.title.setGravity(Gravity.BOTTOM);
+        //Add trailing 0s if needed
+        DecimalFormat decimal = new DecimalFormat("#.00");
+        holder.text.setText(" " + postList.get(position).title + "\n $" + decimal.format(postList.get(position).price));
+        holder.text.setTag(postList.get(position).objectId);
 
         holder.thumbnail.setImageBitmap(postList.get(position).thumbnail);
         holder.thumbnail.setTag(postList.get(position).objectId);
