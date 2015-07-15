@@ -1,16 +1,20 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:background="#ffffff">
     <include
         android:id="@+id/toolbar"
-        layout="@layout/tool_bar"
-        xmlns:android="http://schemas.android.com/apk/res/android" />
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+        layout="@layout/tool_bar"/>
+    <ScrollView
         android:id="@+id/post_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="?attr/actionBarSize"
+        android:clipToPadding="false"
         tools:context="tonychen.agora.FrontEnd.PostViewActivity">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,30 +24,49 @@
                 android:scaleType="fitXY"
                 android:layout_alignParentTop="true"
                 android:adjustViewBounds="true"
-                android:elevation="6dp"
+                android:elevation="-6dp"
                 android:maxHeight="400dp"
                 android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_view"
-                android:layout_below="@id/header_image"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                card_view:cardCornerRadius="4dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:id="@+id/post_title_price"
+                android:layout_below="@+id/header_image">
                 <TextView
                     android:id="@+id/post_title"
-                    android:textSize="30sp"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="100dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/post_price"
-                    android:textSize="30sp"
-                    android:layout_toRightOf="@+id/post_title"
+                    android:textSize="20sp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </android.support.v7.widget.CardView>
+            </RelativeLayout>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/post_fab"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/ic_chat_white_24dp"
+                android:elevation="4dp"
+                android:layout_marginBottom="-28dp"
+                android:layout_marginRight="16dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@id/header_image"/>
+            <TextView
+                android:id="@+id/post_desc"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@+id/post_title_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </RelativeLayout>
     </ScrollView>
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

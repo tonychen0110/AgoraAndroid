@@ -1,7 +1,11 @@
 package tonychen.agora.FrontEnd;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +16,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +27,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import tonychen.agora.BackEnd.ParseInterface;
 import tonychen.agora.R;
 
 
@@ -37,30 +47,35 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        String tag = "mainActivityFragment";
+        FragmentManager fragmentManager = getFragmentManager();
+
         //Setting status bar color to PrimaryColorDark
         this.getWindow().setStatusBarColor(Color.parseColor("#303F9F"));
+        if (fragmentManager.findFragmentByTag(tag) == null) {
+            MainActivityFragment mainActivityFragment = MainActivityFragment.newInstance("RECENTS");
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.frame, mainActivityFragment, tag);
+            fragmentTransaction.commit();
 
-        MainActivityFragment mainActivityFragment = MainActivityFragment.newInstance("RECENTS");
+            //Initializing floating action button & setting click listener
+            FAB = (ImageButton) findViewById(R.id.imageButton);
+            FAB.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame, mainActivityFragment);
-        fragmentTransaction.commit();
+                    Toast.makeText(MainActivity.this, "Hello World", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
 
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Initializing floating action button & setting click listener
-        FAB = (ImageButton) findViewById(R.id.imageButton);
-        FAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Toast.makeText(MainActivity.this,"Hello World",Toast.LENGTH_SHORT).show();
-
-            }
-        });
         //Initializing the header
         RelativeLayout header = (RelativeLayout) findViewById(R.id.header);
 
@@ -68,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Header Selected", Toast.LENGTH_SHORT).show();
+                ParseInterface.logout();
             }
         });
 
@@ -175,4 +190,24 @@ public class MainActivity extends ActionBarActivity {
         actionBarDrawerToggle.syncState();
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.search:
+                Toast.makeText(getApplicationContext(), "Search Clicked!", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

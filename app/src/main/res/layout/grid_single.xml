@@ -4,18 +4,31 @@
     android:layout_height="wrap_content"
     android:padding="5dp" >
 
-
-    <TextView
-        android:id="@+id/grid_title_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:background="#80000000"
-        android:translationZ="12dp"
-        android:textSize="15sp"
+    <RelativeLayout
         android:layout_alignParentBottom="true"
-        />
-
+        android:translationZ="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/grid_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:background="#80000000"
+            android:textSize="15sp"
+            android:maxLines="2"
+            />
+        <TextView
+            android:id="@+id/grid_price"
+            android:layout_below="@+id/grid_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:textColor="#ffffff"
+            android:background="#80000000"
+            android:textSize="15sp"
+            />
+    </RelativeLayout>
     <ImageView
         android:id="@+id/grid_image"
         android:layout_width="200dp"

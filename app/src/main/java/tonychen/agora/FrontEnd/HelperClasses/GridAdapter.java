@@ -54,8 +54,12 @@ public class GridAdapter extends BaseAdapter {
 
         //Add trailing 0s if needed
         DecimalFormat decimal = new DecimalFormat("#.00");
-        holder.text.setText(" " + postList.get(position).title + "\n $" + decimal.format(postList.get(position).price));
-        holder.text.setTag(postList.get(position).objectId);
+
+        holder.title.setText(" " + postList.get(position).title);
+        holder.title.setTag(postList.get(position).objectId);
+
+        holder.price.setText(" $" + decimal.format(postList.get(position).price));
+        holder.price.setTag(postList.get(position).objectId);
 
         holder.thumbnail.setImageBitmap(postList.get(position).thumbnail);
         holder.thumbnail.setTag(postList.get(position).objectId);

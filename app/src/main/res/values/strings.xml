@@ -13,6 +13,9 @@
     <string name = "tech">Tech</string>
     <string name = "misc">Misc</string>
 
+    <string name = "share">Share</string>
+    <string name = "search">Search</string>
+
     <string-array name="nav_bar_titles">
         <item>Browse</item>
         <item>Education</item>

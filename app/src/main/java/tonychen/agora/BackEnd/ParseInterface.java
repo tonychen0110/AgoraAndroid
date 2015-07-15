@@ -188,4 +188,8 @@ public class ParseInterface {
             }
         });
     }
+
+    public static void logout () {
+        ParseUser.logOut();
+    }
 }

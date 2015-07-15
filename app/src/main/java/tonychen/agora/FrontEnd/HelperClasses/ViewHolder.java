@@ -11,10 +11,12 @@ import tonychen.agora.R;
  */
 public class ViewHolder {
     ImageView thumbnail;
-    TextView text;
+    TextView title;
+    TextView price;
 
     ViewHolder(View row) {
         this.thumbnail = (ImageView)row.findViewById(R.id.grid_image);
-        this.text = (TextView)row.findViewById(R.id.grid_title_price);
+        this.title = (TextView)row.findViewById(R.id.grid_title);
+        this.price = (TextView) row.findViewById(R.id.grid_price);
     }
 }
