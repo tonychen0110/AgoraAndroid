@@ -5,6 +5,7 @@
 
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:clipToPadding="false"
     android:background="#ffffff">
     <include
         android:id="@+id/toolbar"
@@ -17,14 +18,16 @@
         android:clipToPadding="false"
         tools:context="tonychen.agora.FrontEnd.PostViewActivity">
         <RelativeLayout
+            android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/header_image"
+                android:clipToPadding="false"
                 android:scaleType="fitXY"
                 android:layout_alignParentTop="true"
                 android:adjustViewBounds="true"
-                android:elevation="-6dp"
+                android:elevation="8dp"
                 android:maxHeight="400dp"
                 android:clickable="true"
                 android:layout_width="match_parent"
@@ -61,12 +64,59 @@
                 android:layout_marginRight="16dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignBottom="@id/header_image"/>
-            <TextView
-                android:id="@+id/post_desc"
+            <RelativeLayout
+                android:id="@+id/poster_info"
+                android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_below="@+id/post_title_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/poster_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/poster_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/poster_picture"
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/poster_mutual_friends"
+                    android:text="Mutual Friends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/poster_name"
+                    android:textSize="10sp"/>
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/post_desc"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@+id/poster_info"
+                android:textSize="15sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <HorizontalScrollView
+                android:id="@+id/secondaryImages"
+                android:layout_below="@id/post_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#424242">
+                <LinearLayout
+                    android:id="@+id/secondaryImagesGallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    />
+            </HorizontalScrollView>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/secondaryImages"
+                android:src="#ffffff"
+                android:background="#ffffff"/>
         </RelativeLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

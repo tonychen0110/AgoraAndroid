@@ -82,8 +82,20 @@ public class ParseInterface {
             post.category = parseObject.getString("category");
             post.price = parseObject.getDouble("price");
             post.createdBy = parseObject.getParseUser("createdBy");
+
             byte[] bytes = parseObject.getParseFile("picture").getData();
             post.headerPhoto = BitmapFactory.decodeByteArray(bytes, 0,bytes.length );
+
+            ArrayList<ParseFile> pictures = (ArrayList) parseObject.get("pictures");
+            post.PFPhotos = pictures;
+            ArrayList<Bitmap> secondaryPictures = new ArrayList<>();
+            for (ParseFile pfPictures: pictures) {
+                bytes = pfPictures.getData();
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 8;
+                secondaryPictures.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
+            }
+            post.secondaryPictures = secondaryPictures;
 
         } catch (ParseException e) {
             //Something wrong happened
@@ -138,34 +150,6 @@ public class ParseInterface {
         }
 
         return retrievedPosts;
-        /*
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> postList, ParseException e) {
-                if (e == null) {
-                    //objects found
-                    for (ParseObject object : postList) {
-                        Post post = new Post();
-                        ParseUser creator = object.getParseUser("createdBy");
-
-                        post.title = object.getString("title");
-                        post.price = object.getDouble("price");
-                        post.itemDesc = object.getString("description");
-                        post.category = object.getString("category");
-                        post.objectId = object.getObjectId();
-                        post.PFthumbnail = object.getParseFile("thumbnail");
-
-                        post.creatorFacebookId = creator.getString("facebookId");
-
-                        vec.add(post);
-
-                    }
-                } else {
-                    //something went wrong
-                }
-            }
-        });
-        */
     }
 
     public static void deleteFromParse(String objectId) {

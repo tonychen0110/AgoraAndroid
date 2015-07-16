@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,9 +28,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.parse.ParseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import tonychen.agora.BackEnd.ParseInterface;
 import tonychen.agora.R;
 
@@ -40,7 +52,6 @@ public class MainActivity extends ActionBarActivity {
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ImageButton FAB;
-    private FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +59,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
 
-        String tag = "mainActivityFragment";
+        final String tag = "mainActivityFragment";
         FragmentManager fragmentManager = getFragmentManager();
 
         //Setting status bar color to PrimaryColorDark
@@ -75,7 +86,6 @@ public class MainActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         //Initializing the header
         RelativeLayout header = (RelativeLayout) findViewById(R.id.header);
 
@@ -87,9 +97,20 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        //TODO Set user's name here
-        TextView headerUsername = (TextView) findViewById(R.id.username);
-        headerUsername.setText("Tony Chen");
+        //User's name & profile picture is set here
+        GraphRequest profileRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                try {
+                    TextView headerUsername = (TextView) findViewById(R.id.username);
+                    headerUsername.setText(jsonObject.getString("name"));
+                    ParseUser user = ParseUser.getCurrentUser();
+                    user.put("facebookId", jsonObject.getString("id"));
+                    user.saveInBackground();
+                } catch (JSONException e) {}
+            }
+        });
+        profileRequest.executeAsync();
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);

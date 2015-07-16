@@ -28,7 +28,8 @@ public class Post  implements Serializable{
 
     public Bitmap headerPhoto;
     public Bitmap thumbnail;
-    public List<Bitmap> photos;
+    public ArrayList<Bitmap> photos;
+    public ArrayList<Bitmap> secondaryPictures;
 
     public ParseFile PFheaderPhoto;
     public ParseFile PFthumbnail;
