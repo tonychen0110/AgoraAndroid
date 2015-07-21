@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(MainActivity.this, "Hello World", Toast.LENGTH_SHORT).show();
+
 
                 }
             });

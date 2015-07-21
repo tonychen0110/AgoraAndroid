@@ -9,6 +9,7 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class Post  implements Serializable{
     public Bitmap thumbnail;
     public ArrayList<Bitmap> photos;
     public ArrayList<Bitmap> secondaryPictures;
+    public ArrayList<Bitmap> secondaryPicturesThumbnails;
 
     public ParseFile PFheaderPhoto;
     public ParseFile PFthumbnail;

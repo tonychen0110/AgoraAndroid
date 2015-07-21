@@ -55,6 +55,7 @@ public class MainActivityFragment extends Fragment {
         gridview = (GridView) viewer.findViewById(R.id.gridview);
         listPosts = ParseInterface.getPostsFromParse(parameter, 0);
 
+        //Setting up pull-down to refresh
         swipeRefreshLayout = (SwipeRefreshLayout) viewer.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -70,6 +71,7 @@ public class MainActivityFragment extends Fragment {
                 Color.YELLOW,
                 Color.RED);
 
+        //Setting up grid of posts
         gridview.setAdapter(new GridAdapter( getActivity(), listPosts ));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,

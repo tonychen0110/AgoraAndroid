@@ -84,18 +84,24 @@ public class ParseInterface {
             post.createdBy = parseObject.getParseUser("createdBy");
 
             byte[] bytes = parseObject.getParseFile("picture").getData();
-            post.headerPhoto = BitmapFactory.decodeByteArray(bytes, 0,bytes.length );
+            BitmapFactory.Options headerOptions = new BitmapFactory.Options();
+            headerOptions.inSampleSize = 4;
+            post.headerPhoto = BitmapFactory.decodeByteArray(bytes, 0,bytes.length, headerOptions );
 
             ArrayList<ParseFile> pictures = (ArrayList) parseObject.get("pictures");
             post.PFPhotos = pictures;
-            ArrayList<Bitmap> secondaryPictures = new ArrayList<>();
+            ArrayList<Bitmap> secondaryPicturesThumbnails = new ArrayList<>();
+            ArrayList<Bitmap> secondaryPicturesFull = new ArrayList<>();
             for (ParseFile pfPictures: pictures) {
                 bytes = pfPictures.getData();
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 8;
-                secondaryPictures.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
+                options.inSampleSize = 7;
+                secondaryPicturesThumbnails.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
+                options.inSampleSize = 3;
+                secondaryPicturesFull.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options));
             }
-            post.secondaryPictures = secondaryPictures;
+            post.secondaryPicturesThumbnails = secondaryPicturesThumbnails;
+            post.secondaryPictures = secondaryPicturesFull;
 
         } catch (ParseException e) {
             //Something wrong happened
