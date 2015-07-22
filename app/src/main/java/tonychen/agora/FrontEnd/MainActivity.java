@@ -3,6 +3,7 @@ package tonychen.agora.FrontEnd;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -76,8 +77,8 @@ public class MainActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View v) {
 
-
-
+                    Intent i = new Intent(getApplicationContext(), AddPostActivity.class);
+                    startActivity(i);
                 }
             });
         }
