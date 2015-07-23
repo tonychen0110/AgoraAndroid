@@ -68,7 +68,7 @@ public class PostViewActivity extends ActionBarActivity {
 
         Post post = ParseInterface.getPostFromParseIndividual(objectId);
 
-        setUpActionBar();
+        setUpActionBar(post);
         setUpFab();
         setUpPosterInfo(post);
         setUpTextAndHeader(post);
@@ -138,10 +138,10 @@ public class PostViewActivity extends ActionBarActivity {
         setUpCategoryDot(post.category);
     }
 
-    private void setUpActionBar() {
+    private void setUpActionBar(Post post) {
 
         //Setting status bar color to PrimaryColorDark
-        this.getWindow().setStatusBarColor(Color.parseColor("#303F9F"));
+        this.getWindow().setStatusBarColor(getResources().getColor(R.color.PrimaryDarkColor));
 
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -150,7 +150,6 @@ public class PostViewActivity extends ActionBarActivity {
         //Setting back button to previous activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Back");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
