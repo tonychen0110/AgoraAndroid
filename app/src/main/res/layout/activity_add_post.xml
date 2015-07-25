@@ -4,62 +4,93 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="tonychen.agora.FrontEnd.AddPostActivity">
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/tool_bar"/>
-        <ImageView
-            android:id="@+id/add_header_image"
-            android:src="@drawable/ic_photo_camera_black_48dp"
-            android:clickable="true"
-            android:scaleType="center"
-            android:layout_width="match_parent"
-            android:layout_height="300dp" />
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:id="@+id/post_title_price_cat"
-            android:layout_below="@+id/add_header_image">
-            <EditText
-                android:id="@+id/add_title"
-                android:hint="Title"
-                android:textSize="20sp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="100dp"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:id="@+id/add_price"
-                android:hint="Price"
-                android:inputType="numberDecimal"
-                android:textSize="20sp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
+            <include
+                android:id="@+id/add_toolbar"
+                layout="@layout/tool_bar"/>
+            <ImageView
+                android:id="@+id/add_header_image"
+                android:src="@drawable/ic_photo_camera_black_48dp"
+                android:clickable="true"
+                android:scaleType="center"
+                android:layout_width="match_parent"
+                android:layout_height="300dp" />
             <RelativeLayout
-                android:id="@+id/add_category"
-                android:layout_marginLeft="5dp"
-                android:gravity="left"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/add_title">
-                <View
-                    android:id="@+id/add_category_circle"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_centerInParent="true"/>
-                <Spinner
-                    android:id="@+id/add_category_text"
-                    android:textSize="13sp"
-                    android:layout_toRightOf="@+id/category_circle"
+                android:layout_below="@+id/add_header_image"
+                android:background="#ffffff"
+                android:id="@+id/add_post_details">
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/add_title_price_cat">
+                    <EditText
+                        android:id="@+id/add_title"
+                        android:hint="Title"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="100dp"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content" />
+                    <EditText
+                        android:id="@+id/add_price"
+                        android:hint="Price"
+                        android:inputType="numberDecimal"
+                        android:textSize="20sp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="5dp"
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content" />
+                    <RelativeLayout
+                        android:id="@+id/add_category"
+                        android:layout_marginLeft="5dp"
+                        android:gravity="left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/add_title">
+                        <TextView
+                            android:id="@+id/add_category_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:textSize="20sp"
+                            android:text="Category:"
+                            android:layout_centerInParent="true"/>
+                        <Spinner
+                            android:id="@+id/add_category_spinner"
+                            android:textSize="13sp"
+                            android:layout_toRightOf="@+id/add_category_text"
+                            android:layout_width="400dp"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                    <EditText
+                        android:id="@+id/add_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_below="@+id/add_category"
+                        android:inputType="textMultiLine"
+                        android:lines="6"
+                        android:gravity="top|left"
+                        android:hint="Description"/>
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/add_post_button"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/add_title_price_cat"
+                    android:layout_centerInParent="true"
+                    android:text="Post"/>
             </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
+    </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -8,7 +8,7 @@
     android:clipToPadding="false"
     android:background="#ffffff">
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/post_toolbar"
         layout="@layout/tool_bar"/>
     <ScrollView
         android:id="@+id/post_scroll_view"

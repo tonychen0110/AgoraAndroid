@@ -17,8 +17,16 @@
     <string name = "search">Search</string>
 
     <string name = "add_post">Add A New Post</string>
+    <string name = "select_photo">Select A Header Photo</string>
+    <string name = "camera_source">Take A Photo</string>
+    <string name = "gallery_source">Your Photos</string>
 
-    <string-array name="nav_bar_titles">
+    <string-array name="photo_sources">
+        <item>Take A Photo</item>
+        <item>Your Photos</item>
+    </string-array>
+
+    <string-array name="categories">
         <item>Browse</item>
         <item>Education</item>
         <item>Fashion</item>
@@ -26,8 +34,8 @@
         <item>Tech</item>
         <item>Misc</item>
     </string-array>
-    <string name="title_activity_post_view">PostViewActivity</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_add_post">AddPostActivity</string>
+    <string name="title_activity_post_view">View Post Activity</string>
+    <string name="title_activity_add_post">Add Post Activity</string>
+
 </resources>

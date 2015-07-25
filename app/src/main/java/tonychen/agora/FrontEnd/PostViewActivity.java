@@ -144,12 +144,13 @@ public class PostViewActivity extends ActionBarActivity {
         this.getWindow().setStatusBarColor(getResources().getColor(R.color.PrimaryDarkColor));
 
         // Initializing Toolbar and setting it as the actionbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.post_toolbar);
         setSupportActionBar(toolbar);
 
         //Setting back button to previous activity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
