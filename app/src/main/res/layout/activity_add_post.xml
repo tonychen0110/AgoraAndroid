@@ -15,7 +15,7 @@
                 layout="@layout/tool_bar"/>
             <ImageView
                 android:id="@+id/add_header_image"
-                android:src="@drawable/ic_photo_camera_black_48dp"
+                android:src="@drawable/add_camera"
                 android:clickable="true"
                 android:scaleType="center"
                 android:layout_width="match_parent"

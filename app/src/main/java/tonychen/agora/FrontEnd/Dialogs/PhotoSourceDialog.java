@@ -20,6 +20,7 @@ import java.util.List;
 
 import tonychen.agora.R;
 
+
 public class PhotoSourceDialog extends DialogFragment {
     private List<String> sources;
 
@@ -35,15 +36,19 @@ public class PhotoSourceDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstance) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.select_photo);
+
         sources = Arrays.asList(getResources().getStringArray(R.array.photo_sources));
         builder.setItems(R.array.photo_sources, new DialogInterface.OnClickListener() {
            public void onClick(DialogInterface dialog, int position) {
+
                if (sources.get(position).equals(getResources().getString(R.string.camera_source))) {
                     Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, 0);
+                    getActivity().startActivityForResult(camera, getResources().getInteger(R.integer.REQUEST_CAMERA));
+
                } else if (sources.get(position).equals(getResources().getString(R.string.gallery_source))) {
                     Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(gallery, 1);
+                    gallery.setType("image/*");
+                    getActivity().startActivityForResult(gallery, getResources().getInteger(R.integer.SELECT_FILE));
                }
            }
         });
@@ -62,7 +67,7 @@ public class PhotoSourceDialog extends DialogFragment {
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(activity.toString()
-                    + " must implement NoticeDialogListener");
+                    + " must implement PhotoSourceDialogListener");
         }
     }
 }

@@ -3,7 +3,12 @@ package tonychen.agora.FrontEnd;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -164,6 +169,36 @@ public class AddPostActivity extends ActionBarActivity implements PhotoSourceDia
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ImageView headerImage = (ImageView) findViewById(R.id.add_header_image);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == getResources().getInteger(R.integer.REQUEST_CAMERA)) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                headerImage.setImageBitmap(bitmap);
+                post.headerPhoto = bitmap;
+
+            } else if (requestCode == getResources().getInteger(R.integer.SELECT_FILE)) {
+                String selectedImagePath = getImagePath(data.getData());
+                Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath);
+                headerImage.setImageBitmap(bitmap);
+                post.headerPhoto = bitmap;
+            }
+        }
+    }
+
+    private String getImagePath(Uri selectedImageUri) {
+        String[] projection = { MediaStore.MediaColumns.DATA };
+        Cursor cursor = managedQuery(selectedImageUri, projection, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        cursor.moveToFirst();
+
+        return cursor.getString(column_index);
 
     }
 }
