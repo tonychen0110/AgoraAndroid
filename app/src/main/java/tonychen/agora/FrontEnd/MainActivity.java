@@ -71,54 +71,42 @@ public class MainActivity extends ActionBarActivity {
             fragmentTransaction.add(R.id.frame, mainActivityFragment, tag);
             fragmentTransaction.commit();
 
-            //Initializing floating action button & setting click listener
-            FAB = (ImageButton) findViewById(R.id.imageButton);
-            FAB.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent i = new Intent(getApplicationContext(), AddPostActivity.class);
-                    startActivity(i);
-                }
-            });
+            setUpFAB();
         }
 
-        // Initializing Toolbar and setting it as the actionbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setUpToolbar();
+        setUpHeader();
+        nameGraphRequest();
+        setUpNavBar();
+    }
 
-        //Initializing the header
-        RelativeLayout header = (RelativeLayout) findViewById(R.id.header);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        //Setting click listener to handle tap on header
-        header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseInterface.logout();
-            }
-        });
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.search:
+                Toast.makeText(getApplicationContext(), "Search Clicked!", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-        //User's name & profile picture is set here
-        GraphRequest profileRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
-                try {
-                    TextView headerUsername = (TextView) findViewById(R.id.username);
-                    headerUsername.setText(jsonObject.getString("name"));
-                    ParseUser user = ParseUser.getCurrentUser();
-                    user.put("facebookId", jsonObject.getString("id"));
-                    user.saveInBackground();
-                } catch (JSONException e) {}
-            }
-        });
-        profileRequest.executeAsync();
+    private void setUpNavBar() {
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            
+
             // This method will trigger on item Click of navigation menu
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -187,6 +175,60 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        setUpDrawerAndActionBarToggle();
+    }
+
+    private void setUpFAB() {
+        //Initializing floating action button & setting click listener
+        FAB = (ImageButton) findViewById(R.id.imageButton);
+        FAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(getApplicationContext(), AddPostActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    private void nameGraphRequest() {
+        //User's name is set here
+        GraphRequest profileRequest = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                try {
+                    TextView headerUsername = (TextView) findViewById(R.id.username);
+                    headerUsername.setText(jsonObject.getString("name"));
+                    ParseUser user = ParseUser.getCurrentUser();
+                    user.put("facebookId", jsonObject.getString("id"));
+                    user.saveInBackground();
+                } catch (JSONException e) {}
+            }
+        });
+        profileRequest.executeAsync();
+    }
+
+    private void setUpHeader() {
+        //Initializing the header
+        RelativeLayout header = (RelativeLayout) findViewById(R.id.header);
+
+        //Setting click listener to handle tap on header
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseInterface.logout();
+            }
+        });
+
+    }
+
+    private void setUpToolbar() {
+        // Initializing Toolbar and setting it as the actionbar
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    private void setUpDrawerAndActionBarToggle() {
         // Initializing Drawer Layout and ActionBarToggle
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawer_open, R.string.drawer_close){
@@ -210,26 +252,5 @@ public class MainActivity extends ActionBarActivity {
 
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
-
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle presses on the action bar items
-        switch (item.getItemId()) {
-            case R.id.search:
-                Toast.makeText(getApplicationContext(), "Search Clicked!", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
 }

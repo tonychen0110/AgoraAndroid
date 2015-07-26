@@ -52,11 +52,19 @@ public class MainActivityFragment extends Fragment {
         View viewer =  inflater.inflate(R.layout.fragment_main, container, false);
 
         parameter = getArguments().getString("parameter");
-        gridview = (GridView) viewer.findViewById(R.id.gridview);
         listPosts = ParseInterface.getPostsFromParse(parameter, 0);
 
-        //Setting up pull-down to refresh
+        gridview = (GridView) viewer.findViewById(R.id.gridview);
         swipeRefreshLayout = (SwipeRefreshLayout) viewer.findViewById(R.id.swipeRefresh);
+
+        setUpSwipeToRefresh(viewer);
+        setUpGrid();
+
+        return viewer;
+    }
+
+    private void setUpSwipeToRefresh(View viewer) {
+        //Setting up pull-down to refresh
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -70,7 +78,9 @@ public class MainActivityFragment extends Fragment {
                 Color.GREEN,
                 Color.YELLOW,
                 Color.RED);
+    }
 
+    private void setUpGrid() {
         //Setting up grid of posts
         gridview.setAdapter(new GridAdapter( getActivity(), listPosts ));
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,7 +91,5 @@ public class MainActivityFragment extends Fragment {
                 startActivity(i);
             }
         });
-
-        return viewer;
     }
 }
