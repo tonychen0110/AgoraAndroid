@@ -178,6 +178,12 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.frame, gridFragment, tag);
                         toolbar.setTitle(getResources().getString(R.string.misc));
                         break;
+                    case R.id.myposts:
+                        Toast.makeText(getApplicationContext(), "My Posts", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.settings:
+                        Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+                        break;
                     default:
                         Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                         toolbar.setTitle("Agora");
