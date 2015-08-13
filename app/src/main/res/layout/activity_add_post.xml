@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <include
@@ -83,14 +85,30 @@
                         android:hint="Description"/>
                 </RelativeLayout>
 
-                <Button
-                    android:id="@+id/add_post_button"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/add_title_price_cat"
-                    android:layout_centerInParent="true"
-                    android:text="Post"/>
             </RelativeLayout>
+
+            <HorizontalScrollView
+                android:id="@+id/add_secondary_images"
+                android:layout_below="@+id/add_post_details"
+                android:scrollbars="none"
+                android:background="#e4e4e4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/add_secondary_images_gallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"/>
+            </HorizontalScrollView>
+
+            <Button
+                android:id="@+id/add_post_button"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_secondary_images"
+                android:layout_centerInParent="true"
+                android:text="Post"/>
+
         </RelativeLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

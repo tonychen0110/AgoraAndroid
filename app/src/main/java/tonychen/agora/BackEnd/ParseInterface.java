@@ -13,6 +13,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.ByteArrayOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +30,8 @@ public class ParseInterface {
         parsePost.put("description", post.itemDesc);
         parsePost.put("category", post.category);
         parsePost.put("price", post.price);
+        parsePost.put("createdBy", ParseUser.getCurrentUser());
+        parsePost.put("pictures", post.secondaryPictures);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         post.headerPhoto.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -110,7 +113,7 @@ public class ParseInterface {
         return post;
     }
 
-    public static List<Post> getPostsFromParse(String parameter, int skip/*, final Vector vec*/) {
+    public static List<Post> getPostsFromParse(String parameter, int skip) {
         List<String> browseKeys = Arrays.asList("objectId", "title", "category", "price", "thumbnail");
         List<Post> retrievedPosts = new ArrayList<>();
 
@@ -181,5 +184,36 @@ public class ParseInterface {
 
     public static void logout () {
         ParseUser.logOut();
+    }
+
+    public static List<Post> search(List<String> keywords) {
+        ParseQuery query = ParseQuery.getQuery("Posts");
+        List<Post> returnResult = new ArrayList<>();
+
+        query.whereContainedIn("tags", keywords);
+
+        try {
+            List<ParseObject> result = query.find();
+
+            for (ParseObject object: result) {
+                Post post = new Post();
+                ParseUser poster = object.getParseUser("createdBy");
+
+                post.title = object.getString("title");
+                post.price = object.getDouble("price");
+                post.itemDesc = object.getString("description");
+                post.category = object.getString("category");
+                post.objectId = object.getObjectId();
+
+                byte[] bytes = object.getParseFile("thumbnail").getData();
+                post.thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                returnResult.add(post);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return returnResult;
     }
 }

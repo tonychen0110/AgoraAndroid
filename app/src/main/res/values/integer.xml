@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="REQUEST_CAMERA"> 0 </integer>
-    <integer name="SELECT_FILE"> 1 </integer>
+    <integer name="REQUEST_CAMERA_HEADER"> 0 </integer>
+    <integer name="SELECT_FILE_HEADER"> 1 </integer>
+    <integer name="REQUEST_CAMERA_SECONDARY"> 2 </integer>
+    <integer name="SELECT_FILE_SECONDARY"> 3 </integer>
+    <integer name="SEARCH">4</integer>
 </resources>

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by tonyc on 6/22/2015.
  */
-public class Post  implements Serializable{
+public class Post implements Serializable{
     public String title;
     public String itemDesc;
     public String category;

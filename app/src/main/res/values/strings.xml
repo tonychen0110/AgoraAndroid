@@ -17,7 +17,8 @@
     <string name = "search">Search</string>
 
     <string name = "add_post">Add A New Post</string>
-    <string name = "select_photo">Select A Header Photo</string>
+    <string name = "select_header_photo">Select A Header Photo</string>
+    <string name = "select_secondary_photo">Select A Secondary Photo</string>
     <string name = "camera_source">Take A Photo</string>
     <string name = "gallery_source">Your Photos</string>
 
@@ -37,5 +38,8 @@
 
     <string name="title_activity_post_view">View Post Activity</string>
     <string name="title_activity_add_post">Add Post Activity</string>
+    <string name="title_activity_search_result">SearchResultActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

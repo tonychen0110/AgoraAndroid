@@ -18,8 +18,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -29,13 +31,16 @@ import java.util.List;
 
 import tonychen.agora.BackEnd.ParseInterface;
 import tonychen.agora.BackEnd.Post;
-import tonychen.agora.FrontEnd.Dialogs.PhotoSourceDialog;
+import tonychen.agora.FrontEnd.Dialogs.HeaderPhotoSourceDialog;
+import tonychen.agora.FrontEnd.Dialogs.SecondaryPhotoSourceDialog;
 import tonychen.agora.R;
 
-public class AddPostActivity extends ActionBarActivity implements PhotoSourceDialog.NoticeDialogListener{
+public class AddPostActivity extends ActionBarActivity implements HeaderPhotoSourceDialog.NoticeDialogListener, SecondaryPhotoSourceDialog.NoticeDialogListener {
     private Toolbar toolbar;
     private Post post;
     private Spinner spinner;
+    private ImageView addSecondaryPhotosImage;
+    private LinearLayout addSecondaryImagesGallery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +50,17 @@ public class AddPostActivity extends ActionBarActivity implements PhotoSourceDia
         header.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog();
+                showDialog("HEADER");
             }
         });
 
         post = new Post();
+        post.secondaryPictures = new ArrayList<>();
+
         setUpActionBar();
         setUpCategoriesSpinner();
         setUpButton();
+        setUpSecondaryImagesGallery();
     }
 
     private boolean isEmpty(EditText editText) {
@@ -73,7 +81,7 @@ public class AddPostActivity extends ActionBarActivity implements PhotoSourceDia
                 ImageView header = (ImageView) findViewById(R.id.add_header_image);
 
                 //Incomplete post checking
-                if(isEmpty(title)) {
+                if (isEmpty(title)) {
                     title.setError("No Title Entered");
                     incomplete = true;
                 } else {
@@ -95,9 +103,11 @@ public class AddPostActivity extends ActionBarActivity implements PhotoSourceDia
                 }
 
                 if (post.category.equals("Select One") || post.category.equals("")) { //Invalid selection for category
-                    ((TextView)spinner.getSelectedView()).setError("No Category Selected");
+                    ((TextView) spinner.getSelectedView()).setError("No Category Selected");
                     incomplete = true;
                 }
+
+                post.secondaryPictures = new ArrayList<Bitmap>();
 
                 if (!incomplete) { //All necessary fields have been filled
                     //Save post to Parse backend
@@ -157,9 +167,14 @@ public class AddPostActivity extends ActionBarActivity implements PhotoSourceDia
         });
     }
 
-    public void showDialog() {
-        DialogFragment dialog = new PhotoSourceDialog();
-        dialog.show(getFragmentManager(), "PhotoSourceDialog");
+    public void showDialog(String context) {
+        if (context.equals("HEADER")) {
+            DialogFragment dialog = new HeaderPhotoSourceDialog();
+            dialog.show(getFragmentManager(), "HeaderPhotoSourceDialog");
+        } else if (context.equals("SECONDARY")) {
+            DialogFragment dialog = new SecondaryPhotoSourceDialog();
+            dialog.show(getFragmentManager(), "SecondaryPhotoSourceDialog");
+        }
     }
 
     @Override
@@ -178,16 +193,68 @@ public class AddPostActivity extends ActionBarActivity implements PhotoSourceDia
         ImageView headerImage = (ImageView) findViewById(R.id.add_header_image);
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == getResources().getInteger(R.integer.REQUEST_CAMERA)) {
+            if (requestCode == getResources().getInteger(R.integer.REQUEST_CAMERA_HEADER)) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 headerImage.setImageBitmap(bitmap);
                 post.headerPhoto = bitmap;
 
-            } else if (requestCode == getResources().getInteger(R.integer.SELECT_FILE)) {
+            } else if (requestCode == getResources().getInteger(R.integer.SELECT_FILE_HEADER)) {
                 String selectedImagePath = getImagePath(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath);
                 headerImage.setImageBitmap(bitmap);
                 post.headerPhoto = bitmap;
+
+            } else if (requestCode == getResources().getInteger(R.integer.REQUEST_CAMERA_SECONDARY)) {
+                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                post.secondaryPictures.add(bitmap);
+
+                ImageView imageView = new ImageView(getApplicationContext());
+                imageView.setLayoutParams(setUpLayoutParams());
+
+                int imageHeight = imageView.getHeight();
+                int imageWidth = imageView.getWidth();
+                int ratio = imageWidth/imageHeight;
+
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 500, (500/ratio), false));
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Remove image view if clicked on
+                    }
+                });
+
+                addSecondaryImagesGallery.removeView(addSecondaryPhotosImage);
+                addSecondaryImagesGallery.addView(imageView);
+                addSecondaryImagesGallery.addView(addSecondaryPhotosImage);
+
+
+            } else if (requestCode == getResources().getInteger(R.integer.SELECT_FILE_SECONDARY)) {
+                String selectedImagePath = getImagePath(data.getData());
+
+                //Create fullsized bitmap for storing in post object
+                Bitmap bitmap = BitmapFactory.decodeFile(selectedImagePath);
+                post.secondaryPictures.add(bitmap);
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
+                //Create reduced sized bitmap for display
+                bitmap = BitmapFactory.decodeFile(selectedImagePath, options);
+
+                ImageView imageView = new ImageView(getApplicationContext());
+                imageView.setLayoutParams(setUpLayoutParams());
+                imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 500, 500, false));
+
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Remove image view if clicked on
+                    }
+                });
+
+                addSecondaryImagesGallery.removeView(addSecondaryPhotosImage);
+                addSecondaryImagesGallery.addView(imageView);
+                addSecondaryImagesGallery.addView(addSecondaryPhotosImage);
             }
         }
     }
@@ -200,5 +267,30 @@ public class AddPostActivity extends ActionBarActivity implements PhotoSourceDia
 
         return cursor.getString(column_index);
 
+    }
+
+    private void setUpSecondaryImagesGallery() {
+        addSecondaryImagesGallery = (LinearLayout) findViewById(R.id.add_secondary_images_gallery);
+
+        addSecondaryPhotosImage = new ImageView(getApplicationContext());
+        addSecondaryPhotosImage.setLayoutParams(setUpLayoutParams());
+        addSecondaryPhotosImage.setImageResource(R.drawable.add_camera);
+
+        addSecondaryPhotosImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("SECONDARY");
+            }
+        });
+
+        addSecondaryImagesGallery.addView(addSecondaryPhotosImage);
+
+    }
+
+    private LinearLayout.LayoutParams setUpLayoutParams() {
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(20,20,20,20);
+
+        return layoutParams;
     }
 }

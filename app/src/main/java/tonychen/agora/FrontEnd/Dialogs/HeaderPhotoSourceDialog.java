@@ -21,7 +21,7 @@ import java.util.List;
 import tonychen.agora.R;
 
 
-public class PhotoSourceDialog extends DialogFragment {
+public class HeaderPhotoSourceDialog extends DialogFragment {
     private List<String> sources;
 
     public interface NoticeDialogListener {
@@ -35,7 +35,7 @@ public class PhotoSourceDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstance) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.select_photo);
+        builder.setTitle(R.string.select_header_photo);
 
         sources = Arrays.asList(getResources().getStringArray(R.array.photo_sources));
         builder.setItems(R.array.photo_sources, new DialogInterface.OnClickListener() {
@@ -43,12 +43,12 @@ public class PhotoSourceDialog extends DialogFragment {
 
                if (sources.get(position).equals(getResources().getString(R.string.camera_source))) {
                     Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    getActivity().startActivityForResult(camera, getResources().getInteger(R.integer.REQUEST_CAMERA));
+                    getActivity().startActivityForResult(camera, getResources().getInteger(R.integer.REQUEST_CAMERA_HEADER));
 
                } else if (sources.get(position).equals(getResources().getString(R.string.gallery_source))) {
                     Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     gallery.setType("image/*");
-                    getActivity().startActivityForResult(gallery, getResources().getInteger(R.integer.SELECT_FILE));
+                    getActivity().startActivityForResult(gallery, getResources().getInteger(R.integer.SELECT_FILE_HEADER));
                }
            }
         });
