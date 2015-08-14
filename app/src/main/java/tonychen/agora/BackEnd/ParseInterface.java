@@ -167,21 +167,6 @@ public class ParseInterface {
         post.deleteInBackground();
     }
 
-    public static void getImage(ParseFile image, final Post post, final String type) {
-        image.getDataInBackground(new GetDataCallback() {
-            @Override
-            public void done(byte[] bytes, ParseException e) {
-                if (type.equals("THUMBNAIL")) {
-                    post.thumbnail = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                } else if (type.equals("HEADER")) {
-                    post.headerPhoto = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                } else {
-                    post.photos.add(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-                }
-            }
-        });
-    }
-
     public static void logout () {
         ParseUser.logOut();
     }

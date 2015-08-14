@@ -45,7 +45,7 @@ public class GridAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             gridView = inflater.inflate(R.layout.grid_single, parent, false);
 
-            holder = new ViewHolder(gridView);
+            holder = new ViewHolder(gridView, "GRID");
 
             gridView.setTag(holder);
        } else {

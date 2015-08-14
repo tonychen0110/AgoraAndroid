@@ -179,7 +179,8 @@ public class MainActivity extends AppCompatActivity {
                         toolbar.setTitle(getResources().getString(R.string.misc));
                         break;
                     case R.id.myposts:
-                        Toast.makeText(getApplicationContext(), "My Posts", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), MyPostsActivity.class);
+                        startActivity(i);
                         break;
                     case R.id.settings:
                         Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
