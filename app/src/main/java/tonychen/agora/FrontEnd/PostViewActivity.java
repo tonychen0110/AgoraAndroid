@@ -17,6 +17,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.Shape;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
@@ -66,13 +67,12 @@ public class PostViewActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         String objectId = bundle.getString("objectId");
 
-        Post post = ParseInterface.getPostFromParseIndividual(objectId);
+        GetPostTask task = new GetPostTask();
+        task.execute(new String[] {objectId});
 
-        setUpActionBar(post);
+        setUpActionBar();
         setUpFab();
-        setUpPosterInfo(post);
-        setUpTextAndHeader(post);
-        setUpSecondaryImages(post);
+
     }
 
     @Override
@@ -91,6 +91,25 @@ public class PostViewActivity extends ActionBarActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class GetPostTask extends AsyncTask<String, Void, Post> {
+        @Override
+        protected Post doInBackground(String... params) {
+            Post post = null;
+            for(String objectId: params) {
+                 post = ParseInterface.getPostFromParseIndividual(objectId);
+            }
+            return post;
+        }
+
+        @Override
+        protected void onPostExecute(Post post) {
+            super.onPostExecute(post);
+            setUpPosterInfo(post);
+            setUpTextAndHeader(post);
+            setUpSecondaryImages(post);
         }
     }
 
@@ -138,7 +157,7 @@ public class PostViewActivity extends ActionBarActivity {
         setUpCategoryDot(post.category);
     }
 
-    private void setUpActionBar(Post post) {
+    private void setUpActionBar() {
 
         //Setting status bar color to PrimaryColorDark
         this.getWindow().setStatusBarColor(getResources().getColor(R.color.PrimaryDarkColor));

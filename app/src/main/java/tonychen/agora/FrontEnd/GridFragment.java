@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -61,10 +62,6 @@ public class GridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View viewer =  inflater.inflate(R.layout.fragment_grid, container, false);
-
-        gridview = (GridView) viewer.findViewById(R.id.gridview);
-        swipeRefreshLayout = (SwipeRefreshLayout) viewer.findViewById(R.id.swipeRefresh);
-
         parameter = getArguments().getString("parameter");
 
         ProgressDialog dialog = new ProgressDialog(getActivity());
@@ -72,22 +69,38 @@ public class GridFragment extends Fragment {
         dialog.setMessage("Wait While Loading");
         dialog.show();
 
-        if (parameter.equals("Search")) {
-            List<String> keywords = getArguments().getStringArrayList("keywords");
-            listPosts = ParseInterface.search(keywords);
-            gridview.setBackgroundColor(Color.LTGRAY);
-        } else {
-            listPosts = ParseInterface.getPostsFromParse(parameter, 0);
-            gridview.setBackgroundColor(Color.LTGRAY);
+        gridview = (GridView) viewer.findViewById(R.id.gridview);
+        gridview.setBackgroundColor(Color.LTGRAY);
 
-        }
+        AsyncGetPostsTask task = new AsyncGetPostsTask();
+        task.execute();
 
+        swipeRefreshLayout = (SwipeRefreshLayout) viewer.findViewById(R.id.swipeRefresh);
         setUpSwipeToRefresh(viewer);
-        setUpGrid();
 
         dialog.dismiss();
 
         return viewer;
+    }
+
+    private class AsyncGetPostsTask extends AsyncTask<String, Void, Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            if (parameter.equals("Search")) {
+                List<String> keywords = getArguments().getStringArrayList("keywords");
+                listPosts = ParseInterface.search(keywords);
+            } else {
+                listPosts = ParseInterface.getPostsFromParse(parameter, 0);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            setUpGrid();
+        }
+
     }
 
     private void setUpSwipeToRefresh(View viewer) {

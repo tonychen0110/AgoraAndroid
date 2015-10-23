@@ -29,9 +29,6 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import tonychen.agora.BackEnd.ParseInterface;
 import tonychen.agora.R;
 

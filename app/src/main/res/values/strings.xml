@@ -42,8 +42,7 @@
 
     <string name="title_activity_post_view">View Post Activity</string>
     <string name="title_activity_add_post">Add Post Activity</string>
-    <string name="title_activity_search_result">SearchResultActivity</string>
-
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_search_result">Search Results Activity</string>
+    <string name="title_activity_my_posts">My Posts Activity</string>
 
 </resources>
