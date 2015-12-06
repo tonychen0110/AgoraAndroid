@@ -1,5 +1,7 @@
 package tonychen.agora.FrontEnd;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -66,7 +68,7 @@ public class MyPostsActivity extends AppCompatActivity {
     }
 
     private void setUpListView() {
-        List<Post> myPosts = ParseInterface.getPostsFromParse("USER", 0);
+        final List<Post> myPosts = ParseInterface.getPostsFromParse("USER", 0);
         ListAdapter adapter = new ListAdapter(this, myPosts);
 
         ListView listView = (ListView) findViewById(R.id.my_post_listView);
@@ -75,7 +77,9 @@ public class MyPostsActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getApplicationContext(), AddPostActivity.class);
+                i.putExtra("objectId", myPosts.get(position).objectId);
+                startActivity(i);
             }
         });
     }

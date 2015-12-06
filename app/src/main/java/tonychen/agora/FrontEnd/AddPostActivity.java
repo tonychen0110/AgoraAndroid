@@ -23,8 +23,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,17 +49,18 @@ public class AddPostActivity extends ActionBarActivity implements HeaderPhotoSou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
-        ImageView header = (ImageView) findViewById(R.id.add_header_image);
-        header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog("HEADER");
-            }
-        });
+        Bundle bundle = getIntent().getExtras();
+        String objectId = bundle.getString("objectId");
 
-        post = new Post();
-        post.secondaryPictures = new ArrayList<>();
+        if (objectId.equals("NEW")) {
+            post = new Post();
+            post.secondaryPictures = new ArrayList<>();
+        } else {
+            post = ParseInterface.getPostFromParseIndividual(objectId);
+        }
 
+        setUpHeader();
+        setUpTextFields();
         setUpActionBar();
         setUpCategoriesSpinner();
         setUpButton();
@@ -66,6 +70,34 @@ public class AddPostActivity extends ActionBarActivity implements HeaderPhotoSou
     private boolean isEmpty(EditText editText) {
         //Returns true if there is nothing in the edittext, fail otherwise
         return editText.getText().toString().trim().length() == 0;
+    }
+
+    private void setUpTextFields() {
+        if (post.title != null && post.itemDesc != null) {
+            EditText title = (EditText) findViewById(R.id.add_title);
+            EditText price = (EditText) findViewById(R.id.add_price);
+            EditText desc = (EditText) findViewById(R.id.add_description);
+
+            title.setText(post.title);
+            desc.setText(post.itemDesc);
+
+            DecimalFormat df = new DecimalFormat("#.00");
+            price.setText(df.format(post.price));
+        }
+    }
+
+    private void setUpHeader() {
+        ImageView header = (ImageView) findViewById(R.id.add_header_image);
+        if (post.headerPhoto != null) {
+            header.setScaleType(ImageView.ScaleType.FIT_XY);
+            header.setImageBitmap(post.headerPhoto);
+        }
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog("HEADER");
+            }
+        });
     }
 
     private void setUpButton() {
@@ -127,10 +159,13 @@ public class AddPostActivity extends ActionBarActivity implements HeaderPhotoSou
         categories.add("Select One");
         categories.addAll(Arrays.asList(getResources().getStringArray(R.array.categories)));
         ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, categories);
+
         // Specify the layout to use when the list of choices appears
         categoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         // Apply the adapter to the spinner
         spinner.setAdapter(categoriesAdapter);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -143,6 +178,11 @@ public class AddPostActivity extends ActionBarActivity implements HeaderPhotoSou
 
             }
         });
+
+        if (post.category != null) {
+            int spinnerPos = categoriesAdapter.getPosition(post.category);
+            spinner.setSelection(spinnerPos);
+        }
     }
 
     private void setUpActionBar() {

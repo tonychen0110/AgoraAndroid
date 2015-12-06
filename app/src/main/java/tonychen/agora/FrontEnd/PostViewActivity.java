@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -30,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Gallery;
 import android.widget.HorizontalScrollView;
@@ -58,6 +61,7 @@ import tonychen.agora.R;
 
 public class PostViewActivity extends ActionBarActivity {
     private Toolbar toolbar;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +71,14 @@ public class PostViewActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         String objectId = bundle.getString("objectId");
 
-        GetPostTask task = new GetPostTask();
-        task.execute(new String[] {objectId});
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Loading");
+        dialog.setMessage("Please Wait While Loading");
+        dialog.show();
 
-        setUpActionBar();
+        GetPostTask task = new GetPostTask();
+        task.execute(objectId);
+
         setUpFab();
 
     }
@@ -79,6 +87,7 @@ public class PostViewActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         getMenuInflater().inflate(R.menu.post_view_menu, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -98,8 +107,8 @@ public class PostViewActivity extends ActionBarActivity {
         @Override
         protected Post doInBackground(String... params) {
             Post post = null;
-            for(String objectId: params) {
-                 post = ParseInterface.getPostFromParseIndividual(objectId);
+            for (String objectId : params) {
+                post = ParseInterface.getPostFromParseIndividual(objectId);
             }
             return post;
         }
@@ -110,6 +119,9 @@ public class PostViewActivity extends ActionBarActivity {
             setUpPosterInfo(post);
             setUpTextAndHeader(post);
             setUpSecondaryImages(post);
+            setUpActionBar();
+            setUpEditButton(post);
+            dialog.dismiss();
         }
     }
 
@@ -119,7 +131,7 @@ public class PostViewActivity extends ActionBarActivity {
         final ImageView zoomedImage = (ImageView) findViewById(R.id.zoomed_image);
 
         //Getting the image
-        zoomedImage.setImageBitmap((Bitmap)v.getTag());
+        zoomedImage.setImageBitmap((Bitmap) v.getTag());
         zoomedImage.setVisibility(View.VISIBLE);
 
         //Zoom back down when clicked on
@@ -214,6 +226,7 @@ public class PostViewActivity extends ActionBarActivity {
                 Toast.makeText(getApplicationContext(), "Message FAB Clicked!", Toast.LENGTH_SHORT).show();
             }
         });
+        floatingActionButton.setVisibility(View.VISIBLE);
     }
 
     private void setUpPosterInfo(Post post) {
@@ -264,5 +277,19 @@ public class PostViewActivity extends ActionBarActivity {
         Drawable[] d = {cate_dot_drawable};
         LayerDrawable layerDrawable = new LayerDrawable(d);
         cate_dot.setBackground(layerDrawable);
+    }
+
+    private void setUpEditButton(final Post post) {
+        Button editButton = (Button) findViewById(R.id.editButton);
+
+        if (post.createdBy.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+            editButton.setVisibility(View.VISIBLE);
+            editButton.setOnClickListener(new View.OnClickListener()  {
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), AddPostActivity.class);
+                    i.putExtra("objectId", post.objectId);
+                    startActivity(i);
+                }});
+        }
     }
 }

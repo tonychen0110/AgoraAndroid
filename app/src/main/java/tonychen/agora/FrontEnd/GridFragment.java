@@ -66,7 +66,7 @@ public class GridFragment extends Fragment {
 
         ProgressDialog dialog = new ProgressDialog(getActivity());
         dialog.setTitle("Loading");
-        dialog.setMessage("Wait While Loading");
+        dialog.setMessage("Please Wait While Loading");
         dialog.show();
 
         gridview = (GridView) viewer.findViewById(R.id.gridview);

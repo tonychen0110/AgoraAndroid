@@ -201,8 +201,8 @@ public class MainActivity extends AppCompatActivity {
         FAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(getApplicationContext(), AddPostActivity.class);
+                i.putExtra("objectId", "NEW");
                 startActivity(i);
             }
         });
@@ -234,6 +234,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ParseInterface.logout();
+                Intent i = new Intent(getApplicationContext(), com.parse.ui.ParseLoginActivity.class);
+                startActivity(i);
             }
         });
 
